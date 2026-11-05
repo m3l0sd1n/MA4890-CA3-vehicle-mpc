@@ -1,0 +1,53 @@
+#  vehicle.yaml - NTU Formula Racing vehicle parameters
+#  Every entry:  value | unit | status | source
+#    status: measured    = locked value from team data
+#            placeholder = estimate, MUST be replaced before final results
+#            todo        = not yet known (value: null)
+#  All values SI. Cf / Cr are PER-AXLE cornering stiffness (= 2 x single tyre).
+#  Derived values are NOT stored here (compute them, never type them):
+#    lf = wheelbase * (1 - weight_front)    CG to front axle
+#    lr = wheelbase * weight_front          CG to rear axle
+#
+#  Sources: team vehicle parameter sheet + FYP_HuangXingjian suspension report
+
+
+
+# ---------------- Mass & geometry ----------------
+m:            {value: 320.0, unit: kg, status: measured, source: parameter sheet}
+wheelbase:    {value: 1.60,  unit: m,  status: measured, source: parameter sheet}
+weight_front: {value: 0.45,  unit: "-", status: measured, source: "front axle load fraction (45:55)"}
+track_front:  {value: null,  unit: m,  status: todo, source: ""}
+track_rear:   {value: null,  unit: m,  status: todo, source: ""}
+h_cg:         {value: null,  unit: m,  status: todo, source: "CG height, needed for L2 load transfer"}
+
+# ---------------- Inertia ----------------
+Iz: {value: 203.0, unit: kg*m^2, status: placeholder, source: "yaw inertia, estimated as m*lf*lr"}
+Ix: {value: null,  unit: kg*m^2, status: todo, source: "roll inertia, L2 only"}
+
+# ---------------- Tyres ----------------
+Cf:           {value: 50000.0, unit: N/rad, status: placeholder, source: "front axle; replace with Pacejka (report App. B)"}
+Cr:           {value: 61000.0, unit: N/rad, status: placeholder, source: "rear axle; replace with Pacejka (report App. B)"}
+wheel_radius: {value: null, unit: m,   status: todo, source: ""}
+mu_peak:      {value: null, unit: "-", status: todo, source: "peak friction coefficient"}
+pacejka_B:    {value: null, unit: "-", status: todo, source: "Magic Formula, report App. B"}
+pacejka_C:    {value: null, unit: "-", status: todo, source: ""}
+pacejka_D:    {value: null, unit: "-", status: todo, source: ""}
+pacejka_E:    {value: null, unit: "-", status: todo, source: ""}
+
+# ---------------- Suspension (L2 double-track only) ----------------
+roll_stiffness_front: {value: null, unit: N*m/rad, status: todo, source: ""}
+roll_stiffness_rear:  {value: null, unit: N*m/rad, status: todo, source: ""}
+roll_centre_front:    {value: null, unit: m, status: todo, source: "roll centre height"}
+roll_centre_rear:     {value: null, unit: m, status: todo, source: ""}
+
+# ---------------- Steering & powertrain (= MPC constraints) ----------------
+delta_max:      {value: null, unit: rad,   status: todo, source: "front wheel steering angle limit"}
+delta_rate_max: {value: null, unit: rad/s, status: todo, source: "steering rate limit"}
+gear_ratio:     {value: null, unit: "-",   status: todo, source: "single rear motor: EMRAX 228 + Cascadia CM200"}
+T_motor_max:    {value: null, unit: N*m,   status: todo, source: "EMRAX 228 datasheet"}
+a_max:          {value: null, unit: m/s^2, status: todo, source: "acceleration limit"}
+a_min:          {value: null, unit: m/s^2, status: todo, source: "braking limit (negative)"}
+
+# ---------------- Simulation settings (not vehicle physics) ----------------
+vx_op: {value: 10.0, unit: m/s, status: measured, source: "linearisation operating point"}
+dt:    {value: 0.02, unit: s,   status: measured, source: "control period (50 Hz)"}
