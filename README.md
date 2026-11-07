@@ -1,4 +1,4 @@
-# MA4890 CA3 — Vehicle Path-Tracking MPC (stub handover)
+# MA4890 CA3 — Vehicle Path-Tracking MPC 
 
 Clone, then from the repo root:
 
