@@ -15,7 +15,7 @@ import numpy as np
 
 
 class StanleyController:
-    def __init__(self, P, vx, k=1.0):
+    def __init__(self, P, vx, k=10.0):
         self.P = P
         self.vx = vx
         self.k = k
