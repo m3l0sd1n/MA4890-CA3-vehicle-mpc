@@ -24,18 +24,6 @@ scores  = metrics(log, delta_max)             # dict of scalars
 As long as your file matches its signature, the whole loop keeps working. You can
 develop against the stubs already in the repo without waiting for anyone else.
 
-## Who owns what
-
-| File | Owner | Status |
-|---|---|---|
-| `params/vehicle_params.yml` | synced from FYP repo | **read-only**, do not edit here |
-| `ca3/params.py`, `ca3/vehicle.py` | Hedi | plant works; real model drops in later |
-| `ca3/controllers/mpc.py` | Hedi | **stub** (simple feedback) → real condensed-QP MPC |
-| `ca3/controllers/stanley.py` | Member 2 | first version runs; tune `k`, confirm sign |
-| `ca3/reference.py` | Member 2 | skidpad only → add double lane change |
-| `ca3/metrics.py` | Member 3 | basic metrics work → add what Q1–Q3 need |
-| `scripts/run_sweep.py`, `scripts/make_plots.py` | Member 3 | to write |
-
 ## Notes
 - `params/vehicle_params.yml` is auto-synced from the FYP repo. **Do not edit it here** —
   changes get overwritten on the next sync. Pull/sync before you start each session.
