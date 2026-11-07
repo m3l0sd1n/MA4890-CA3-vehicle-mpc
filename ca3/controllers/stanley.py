@@ -1,12 +1,12 @@
 """
-stanley.py  [Member 2]  -- classical baseline
+stanley.py -- classical baseline
 Interface (same as the MPC):  u, info = ctrl.solve(x, kappa_ahead)
 
 Stanley law on the error state:  delta = e_psi + atan(k * e_y / vx)
   e_y   = x[0]   (cross-track error)
   e_psi = x[2]   (heading error)
 
-STUB: a first version is written so comparisons run. TODO [Member 2]: tune k,
+STUB: a first version is written so comparisons run. TODO: tune k,
 decide the cl: clip to delta_max to match the MPC's constraint for a fair
 comparison, and confirm the sign convention against the plant.
 """

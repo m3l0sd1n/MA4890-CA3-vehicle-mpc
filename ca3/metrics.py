@@ -1,11 +1,12 @@
 """
-metrics.py  [Member 3]
+metrics.py  
 scores = metrics(log)  ->  dict of scalar performance numbers.
 log is the dict returned by run_sim (numpy arrays: t, x, u, kappa, solve_time).
 
-A working basic version is provided. TODO [Member 3]: add whatever Q1-Q3 need
+A working basic version is provided. TODO: add whatever Q1-Q3 need
 (e.g. settling, ay utilisation), and the plotting lives in make_plots.py.
 """
+
 import numpy as np
 
 

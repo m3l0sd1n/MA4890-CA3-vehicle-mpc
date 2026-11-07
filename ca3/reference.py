@@ -1,9 +1,8 @@
 """
-reference.py  [Member 2]
 The track, expressed as curvature kappa(s) along arc length s [m].
 
 STUB: a constant-curvature skidpad is provided so the pipeline runs today.
-TODO [Member 2]:
+TODO:
   - make skidpad radius match the real Formula Student skidpad
   - add the double lane change profile (kappa(s) that goes +, 0, -, 0)
 Keep the method names below unchanged -- run_sim.py and the controllers rely on them.

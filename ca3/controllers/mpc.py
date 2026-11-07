@@ -3,11 +3,6 @@ mpc.py  [Hedi]  -- the constrained linear MPC
 Interface:  u, info = ctrl.solve(x, kappa_ahead)
             info["solve_time"]  single-step solve time [s]
 
-STUB: this placeholder is a simple stabilizing full-state feedback, clipped to
-delta_max, just so the closed loop runs and produces a sensible plot today.
-TODO [Hedi]: replace with the condensed-QP MPC from the FYP legacy code
-  (prediction matrices M, C and H, E; U* = -H^{-1} E x; take U*[0]; add the
-  steering-angle constraint via OSQP or clipping). Keep this exact signature.
 """
 import time
 import numpy as np

@@ -1,5 +1,5 @@
 """
-pid.py  [Member ?]  -- naive baseline
+pid.py -- naive baseline
 Interface (same as all controllers):  u, info = ctrl.solve(x, kappa_ahead)
 
 A plain PID on the cross-track error e_y only. This is the "what a team often
@@ -11,7 +11,7 @@ curvature (steady-state error / lag) -- that is the point of including it.
   e_y_dot = x[1]
   delta = -(Kp*e_y + Ki*∫e_y dt + Kd*e_y_dot)   (negative to match plant sign)
 
-STUB: starter gains are set. TODO [owner]: tune Kp/Ki/Kd, decide whether to
+STUB: starter gains are set. TODO: tune Kp/Ki/Kd, decide whether to
 clip to delta_max for a fair comparison, and discuss WHY it lags on curves.
 """
 import time

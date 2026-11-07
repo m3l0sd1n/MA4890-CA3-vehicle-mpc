@@ -1,10 +1,9 @@
 """
-params.py  [Hedi]
+params.py  
 Load vehicle_params.yml and expose a plain object with the numbers the rest
 of the code needs. lf / lr are computed from wheelbase + weight distribution
 (they are NOT stored in the yml).
 
-MATLAB note: this is like loading a struct. P.m, P.lf, etc. are just fields.
 """
 import os
 import yaml
