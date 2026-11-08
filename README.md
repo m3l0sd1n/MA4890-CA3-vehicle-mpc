@@ -3,10 +3,16 @@
 Clone, then from the repo root:
 
 ```bash
-pip install numpy scipy pyyaml matplotlib
-python scripts/run_sim.py                 # MPC (stub), skidpad, vx=10, N=20
-python scripts/run_sim.py --ctrl stanley  # Stanley baseline
-python scripts/run_sim.py --vx 16 --N 40  # Q2/Q3 knobs
+pip install numpy scipy pyyaml matplotlib osqp
+
+# results for the report (figures go to results/)
+python scripts/run_q1.py          # Q1: MPC vs Stanley vs PID, skidpad + DLC
+python scripts/run_constraint.py  # MPC v1 (clip) vs v2 (constraint in QP)
+python scripts/run_sweep.py       # Q3: speed mismatch on DLC
+
+# single run for debugging
+python scripts/run_sim.py --ctrl stanley --track dlc --ey0 0
+```
 ```
 
 A figure is saved to `results/`. If it runs and you get a plot, your setup is good
