@@ -79,9 +79,12 @@ def main():
     ap.add_argument("--T", type=float, default=20.0)
     ap.add_argument("--vx_lin", type=float, default=None,
                     help="speed the MPC model is linearised at [m/s]; default = vx (no mismatch)")
+    ap.add_argument("--ey0", type=float, default=0.5,
+                    help="initial lateral error e_y [m]; use 0 to isolate tracking of the manoeuvre")
     args = ap.parse_args()
 
     P = Params()
+    vx = args.vx if args.vx is not None else P.vx_op 
     vxl = args.vx_lin if args.vx_lin is not None else vx
     print(f"controller={args.ctrl}  track={args.track}  vx={vx} m/s  vx_lin={vxl} m/s  N={args.N}")
 
@@ -98,10 +101,9 @@ def main():
     else:
         ctrl = PIDController(P, vx)
 
-    log = run_sim(plant, ctrl, ref, dt=P.dt, vx=vx, T=args.T)
+    log = run_sim(plant, ctrl, ref, dt=P.dt, vx=vx, T=args.T, x0=[args.ey0, 0.0, 0.0, 0.0])
     scores = metrics(log, delta_max=P.delta_max)
-
-    print(f"controller={args.ctrl}  vx={vx} m/s  N={args.N}")
+    
     for key, val in scores.items():
         print(f"  {key:18s} = {val:.5g}")
 
