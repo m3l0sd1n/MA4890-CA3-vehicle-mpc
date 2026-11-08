@@ -13,7 +13,6 @@ python scripts/run_sweep.py       # Q3: speed mismatch on DLC
 # single run for debugging
 python scripts/run_sim.py --ctrl stanley --track dlc --ey0 0
 ```
-```
 
 A figure is saved to `results/`. If it runs and you get a plot, your setup is good
 and you can start on your file.
@@ -34,5 +33,3 @@ develop against the stubs already in the repo without waiting for anyone else.
 - `params/vehicle_params.yml` is auto-synced from the FYP repo. **Do not edit it here** —
   changes get overwritten on the next sync. Pull/sync before you start each session.
 - `results/` is not committed (`.gitignore`).
-- The stub MPC is **not** horizon-aware, so `--N` has no effect yet; it starts mattering
-  once the real condensed-QP MPC lands. That is expected, not a bug.
