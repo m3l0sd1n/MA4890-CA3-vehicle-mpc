@@ -77,10 +77,13 @@ def main():
     ap.add_argument("--N", type=int, default=20, help="MPC horizon")
     ap.add_argument("--track", default="skidpad")
     ap.add_argument("--T", type=float, default=20.0)
+    ap.add_argument("--vx_lin", type=float, default=None,
+                    help="speed the MPC model is linearised at [m/s]; default = vx (no mismatch)")
     args = ap.parse_args()
 
     P = Params()
-    vx = args.vx if args.vx is not None else P.vx_op
+    vxl = args.vx_lin if args.vx_lin is not None else vx
+    print(f"controller={args.ctrl}  track={args.track}  vx={vx} m/s  vx_lin={vxl} m/s  N={args.N}")
 
     # plant is built at the ACTUAL speed vx; the MPC is linearised at vx too in
     # the stub. Q3 (model mismatch) = build the controller's model at P.vx_op
@@ -89,7 +92,7 @@ def main():
     ref = Reference(kind=args.track)
 
     if args.ctrl == "mpc":
-        ctrl = MPCController(P, vx, N=args.N)
+        ctrl = MPCController(P, vx, N=args.N, vx_lin=args.vx_lin)
     elif args.ctrl == "stanley":
         ctrl = StanleyController(P, vx)
     else:
@@ -109,7 +112,7 @@ def main():
     ax[0].plot(log["t"], log["x"][:, 0])
     ax[0].set_ylabel("cross-track error e_y [m]")
     ax[0].grid(True)
-    ax[0].set_title(f"{args.ctrl} | vx={vx} m/s | N={args.N} | {args.track}")
+    ax[0].set_title(f"{args.ctrl} | {args.track} | vx={vx} | vx_lin={vxl} | N={args.N}")
     ax[1].plot(log["t"], np.degrees(log["u"]))
     ax[1].axhline(np.degrees(P.delta_max), ls="--", color="r", lw=0.8)
     ax[1].axhline(-np.degrees(P.delta_max), ls="--", color="r", lw=0.8)
@@ -117,7 +120,7 @@ def main():
     ax[1].set_xlabel("time [s]")
     ax[1].grid(True)
     fig.tight_layout()
-    out = os.path.join(out_dir, f"run_{args.ctrl}_vx{vx:g}_N{args.N}.png")
+    out = os.path.join(out_dir, f"run_{args.ctrl}_{args.track}_vx{vx:g}_lin{vxl:g}_N{args.N}.png")
     fig.savefig(out, dpi=120)
     print(f"saved {out}")
 
