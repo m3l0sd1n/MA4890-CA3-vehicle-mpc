@@ -6,10 +6,14 @@ TODO v2: enforce |delta| <= delta_max inside the QP via OSQP (drop the clip).
 
 import time
 import numpy as np
+
 from ca3.vehicle import LateralErrorPlant   # Ad/Bd/Ed
 
+import osqp
+from scipy import sparse
+
 class MPCController:
-    def __init__(self, P, vx, N=20, vx_lin=None):
+    def __init__(self, P, vx, N=20, vx_lin=None, constrained=True):
         self.P = P
         self.vx = vx
         self.N = N
@@ -58,6 +62,22 @@ class MPCController:
         self.H  = C.T @ Qbar @ C + Rbar     # Hessian, (N x N)
         self.E  = C.T @ Qbar @ M            # (N x n)
         self.Ed_dist = C.T @ Qbar @ Cd      # (N x N)
+        
+        # --- (6) constrained QP solver (OSQP), set up once ---
+        # OSQP standard form:  min 1/2 U'PU + q'U   s.t.  l <= A U <= u
+        # P = H and A = I never change, so OSQP factorises them once;
+        # each step only q (= f) is updated.
+        self.constrained = constrained
+        if constrained:
+            self.qp = osqp.OSQP()
+            self.qp.setup(
+                P=sparse.triu(sparse.csc_matrix(self.H), format="csc"),
+                q=np.zeros(N),
+                A=sparse.eye(N, format="csc"),
+                l=-self.delta_max * np.ones(N),
+                u= self.delta_max * np.ones(N),
+                verbose=False, eps_abs=1e-6, eps_rel=1e-6,
+            )
 
     def solve(self, x, kappa_ahead):
         t0 = time.perf_counter()
@@ -74,7 +94,21 @@ class MPCController:
         f = self.E @ x0 + self.Ed_dist @ D            # linear term (N,)
         U = np.linalg.solve(self.H, -f)               # U* = -H^-1 f, full input sequence (N,)
 
-        # (3) receding horizon: apply the first move, clipped to the steering limit
-        delta0 = float(np.clip(U[0], -self.delta_max, self.delta_max))
+        if self.constrained:
+            # v2: constraint is inside the QP -- the whole planned sequence respects delta_max
+            self.qp.update(q=f)
+            res = self.qp.solve()
+            if res.info.status not in ("solved", "solved inaccurate"):
+                # safety fallback: never return garbage to the car
+                U = np.clip(np.linalg.solve(self.H, -f), -self.delta_max, self.delta_max)
+            else:
+                U = res.x
+            d0 = float(U[0])
+        else:
+            # v1: unconstrained solve, then clip only the first move
+            U = np.linalg.solve(self.H, -f)
+            d0 = float(np.clip(U[0], -self.delta_max, self.delta_max))
+
+        return d0, {"solve_time": time.perf_counter() - t0}
 
         return delta0, {"solve_time": time.perf_counter() - t0}
