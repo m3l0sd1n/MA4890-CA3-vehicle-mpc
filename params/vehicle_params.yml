@@ -13,21 +13,21 @@
 m:            {value: 320.0,  unit: kg,  status: measured}   # with driver (250 kg without)
 wheelbase:    {value: 1.60,   unit: m,   status: measured}
 weight_front: {value: 0.48,   unit: "-", status: measured}   # static, 48 front / 52 rear
-track_front:  {value: 1.25,   unit: m,   status: measured}
-track_rear:   {value: 1.25,   unit: m,   status: measured}
+track_front:  {value: 1.28,   unit: m,   status: measured}
+track_rear:   {value: 1.28,   unit: m,   status: measured}
 h_cg:         {value: 0.32,   unit: m,   status: measured}
 
 # ---------------- Inertia ----------------
-Iz: {value: 203.0, unit: kg*m^2, status: placeholder}   # yaw inertia, estimated as m*lf*lr
-Ix: {value: null,  unit: kg*m^2}                          # roll inertia, L2 only
+Iz: {value: 204.5, unit: kg*m^2, status: placeholder}   # yaw inertia, estimated as m*lf*lr
+Ix: {value: null,  unit: kg*m^2}                        # roll inertia, L2 only
 
 # ---------------- Tyres ----------------
-Cf:           {value: 50000.0, unit: N/rad, status: placeholder}  # front axle; replace with Pacejka (report App. B)
-Cr:           {value: 61000.0, unit: N/rad, status: placeholder}  # rear axle; replace with Pacejka (report App. B)
+Cf:           {value: 50000.0, unit: N/rad, status: placeholder}  # front axle; replace with Pacejka fit (TTC data, source TBD)
+Cr:           {value: 61000.0, unit: N/rad, status: placeholder}  # rear axle; replace with Pacejka fit (TTC data, source TBD)
 wheel_radius: {value: 0.2032,  unit: m,     status: measured}     # loaded radius, Hoosier LC0 16x7.5-10
-kt:           {value: 104000.0, unit: N/m, status: placeholder}  # tyre vertical stiffness, single tyre (104 N/mm), App. B codes 4-5
+kt:           {value: 104000.0, unit: N/m, status: placeholder}   # tyre vertical stiffness, single tyre (104 N/mm), App. B codes 4-5
 mu_peak:      {value: 1.6,     unit: "-",   status: measured}     # longitudinal mu_x, slick on dry; lateral assumed equal
-pacejka_B:    {value: null, unit: "-"}                            # Magic Formula, report App. B
+pacejka_B:    {value: null, unit: "-"}                            # Magic Formula;
 pacejka_C:    {value: null, unit: "-"}
 pacejka_D:    {value: null, unit: "-"}
 pacejka_E:    {value: null, unit: "-"}
