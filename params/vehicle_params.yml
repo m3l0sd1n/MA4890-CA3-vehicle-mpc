@@ -1,53 +1,52 @@
-#  vehicle.yaml - NTU Formula Racing vehicle parameters
-#  Every entry:  value | unit | status | source
+#  vehicle_params.yml - NTU Formula Racing vehicle parameters
+#  Every entry:  {value, unit, status}
 #    status: measured    = locked value from team data
 #            placeholder = estimate, MUST be replaced before final results
-#            todo        = not yet known (value: null)
+#    value: null = not yet known (no status needed); filling a value requires a status
 #  All values SI. Cf / Cr are PER-AXLE cornering stiffness (= 2 x single tyre).
 #  Derived values are NOT stored here (compute them, never type them):
 #    lf = wheelbase * (1 - weight_front)    CG to front axle
 #    lr = wheelbase * weight_front          CG to rear axle
-#
-#  Sources: team vehicle parameter sheet + FYP_HuangXingjian suspension report
-
-
+#  Main source: NTU FR Vehicle Parameters Sheet (Mechanical Engineering Test), unless noted.
 
 # ---------------- Mass & geometry ----------------
-m:            {value: 320.0, unit: kg, status: measured, source: parameter sheet}
-wheelbase:    {value: 1.60,  unit: m,  status: measured, source: parameter sheet}
-weight_front: {value: 0.45,  unit: "-", status: measured, source: "front axle load fraction (45:55)"}
-track_front:  {value: null,  unit: m,  status: todo, source: ""}
-track_rear:   {value: null,  unit: m,  status: todo, source: ""}
-h_cg:         {value: null,  unit: m,  status: todo, source: "CG height, needed for L2 load transfer"}
+m:            {value: 320.0,  unit: kg,  status: measured}   # with driver (250 kg without)
+wheelbase:    {value: 1.60,   unit: m,   status: measured}
+weight_front: {value: 0.48,   unit: "-", status: measured}   # static, 48 front / 52 rear
+track_front:  {value: 1.25,   unit: m,   status: measured}
+track_rear:   {value: 1.25,   unit: m,   status: measured}
+h_cg:         {value: 0.32,   unit: m,   status: measured}
 
 # ---------------- Inertia ----------------
-Iz: {value: 203.0, unit: kg*m^2, status: placeholder, source: "yaw inertia, estimated as m*lf*lr"}
-Ix: {value: null,  unit: kg*m^2, status: todo, source: "roll inertia, L2 only"}
+Iz: {value: 203.0, unit: kg*m^2, status: placeholder}   # yaw inertia, estimated as m*lf*lr
+Ix: {value: null,  unit: kg*m^2}                          # roll inertia, L2 only
 
 # ---------------- Tyres ----------------
-Cf:           {value: 50000.0, unit: N/rad, status: placeholder, source: "front axle; replace with Pacejka (report App. B)"}
-Cr:           {value: 61000.0, unit: N/rad, status: placeholder, source: "rear axle; replace with Pacejka (report App. B)"}
-wheel_radius: {value: null, unit: m,   status: todo, source: ""}
-mu_peak:      {value: null, unit: "-", status: todo, source: "peak friction coefficient"}
-pacejka_B:    {value: null, unit: "-", status: todo, source: "Magic Formula, report App. B"}
-pacejka_C:    {value: null, unit: "-", status: todo, source: ""}
-pacejka_D:    {value: null, unit: "-", status: todo, source: ""}
-pacejka_E:    {value: null, unit: "-", status: todo, source: ""}
+Cf:           {value: 50000.0, unit: N/rad, status: placeholder}  # front axle; replace with Pacejka (report App. B)
+Cr:           {value: 61000.0, unit: N/rad, status: placeholder}  # rear axle; replace with Pacejka (report App. B)
+wheel_radius: {value: 0.2032,  unit: m,     status: measured}     # loaded radius, Hoosier LC0 16x7.5-10
+kt:           {value: 104000.0, unit: N/m, status: placeholder}  # tyre vertical stiffness, single tyre (104 N/mm), App. B codes 4-5
+mu_peak:      {value: 1.6,     unit: "-",   status: measured}     # longitudinal mu_x, slick on dry; lateral assumed equal
+pacejka_B:    {value: null, unit: "-"}                            # Magic Formula, report App. B
+pacejka_C:    {value: null, unit: "-"}
+pacejka_D:    {value: null, unit: "-"}
+pacejka_E:    {value: null, unit: "-"}
 
 # ---------------- Suspension (L2 double-track only) ----------------
-roll_stiffness_front: {value: null, unit: N*m/rad, status: todo, source: ""}
-roll_stiffness_rear:  {value: null, unit: N*m/rad, status: todo, source: ""}
-roll_centre_front:    {value: null, unit: m, status: todo, source: "roll centre height"}
-roll_centre_rear:     {value: null, unit: m, status: todo, source: ""}
+roll_stiffness_front: {value: 22345.0, unit: N*m/rad, status: placeholder}  # 750 Nm/deg total x 0.52 front = 390 Nm/deg (App. B code 2)
+roll_stiffness_rear:  {value: 20626.0, unit: N*m/rad, status: placeholder}  # 750 x 0.48 = 360 Nm/deg (App. B code 2)
+roll_centre_front:    {value: 0.040,   unit: m,       status: placeholder}  # App. B code 6 (code 2 sweeps 0-80 mm)
+roll_centre_rear:     {value: 0.050,   unit: m,       status: placeholder}  # App. B code 6
 
 # ---------------- Steering & powertrain (= MPC constraints) ----------------
-delta_max:      {value: null, unit: rad,   status: todo, source: "front wheel steering angle limit"}
-delta_rate_max: {value: null, unit: rad/s, status: todo, source: "steering rate limit"}
-gear_ratio:     {value: null, unit: "-",   status: todo, source: "single rear motor: EMRAX 228 + Cascadia CM200"}
-T_motor_max:    {value: null, unit: N*m,   status: todo, source: "EMRAX 228 datasheet"}
-a_max:          {value: null, unit: m/s^2, status: todo, source: "acceleration limit"}
-a_min:          {value: null, unit: m/s^2, status: todo, source: "braking limit (negative)"}
+delta_max:      {value: 0.438, unit: rad, status: measured}   # front wheel angle limit: avg inner/outer at 170 deg handwheel lock (26.36/23.88 deg), Trishit steering model 2026-11-09
+steering_ratio: {value: 7.0,   unit: "-", status: measured}   # on-centre handwheel:road-wheel ratio (design); full-lock average 6.77:1
+delta_rate_max: {value: null,  unit: rad/s}                   # steering rate limit
+gear_ratio:     {value: 4.4167, unit: "-", status: measured}  # chain 53:12, single speed, no gearbox; Emrax 228
+T_motor_max:    {value: 220.0, unit: N*m, status: measured}   # Emrax 228 peak torque (80 kW peak power, 6500 rpm limit)
+a_max:          {value: null,  unit: m/s^2}                   # speed-dependent (traction then power limited), compute in code
+a_min:          {value: -15.70, unit: m/s^2, status: placeholder}  # braking target 1.6 g (design target, not measured)
 
 # ---------------- Simulation settings (not vehicle physics) ----------------
-vx_op: {value: 10.0, unit: m/s, status: measured, source: "linearisation operating point"}
-dt:    {value: 0.02, unit: s,   status: measured, source: "control period (50 Hz)"}
+vx_op: {value: 10.0, unit: m/s, status: measured}   # linearisation operating point
+dt:    {value: 0.02, unit: s,   status: measured}   # control period (50 Hz)
