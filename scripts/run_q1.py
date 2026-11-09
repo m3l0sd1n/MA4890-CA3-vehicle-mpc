@@ -63,7 +63,7 @@ for a, (track, scale, unit, title, xmax) in zip(ax, panels):
     a.grid(True, alpha=0.3)
     a.spines[["top", "right"]].set_visible(False)
 ax[0].legend(frameon=False)
-fig.suptitle(f"Q1: lateral tracking at vx = {vx:g} m/s", x=0.02, ha="left")
+fig.suptitle(f"Lateral tracking at vx = {vx:g} m/s", x=0.02, ha="left")
 fig.tight_layout()
 
 out_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "results")
