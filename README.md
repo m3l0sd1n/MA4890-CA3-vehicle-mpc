@@ -12,6 +12,8 @@ python scripts/run_sweep.py       # Q3: speed mismatch on DLC
 
 # single run for debugging
 python scripts/run_sim.py --ctrl stanley --track dlc --ey0 0
+python scripts/stanley_plots.py   # Stanley gain tuning (k = 1, 3, 10, 13)
+python scripts/pid_analysis.py    # PID gain search and Ki sweep
 ```
 
 A figure is saved to `results/`. If it runs and you get a plot, your setup is good
